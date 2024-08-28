@@ -121,7 +121,7 @@ DVHOST_CLOUD_check_status() {
 
 DVHOST_CLOUD_GET_LOCAL_IP(){
     clear
-    DVHOST_CLOUD_menu "| 1  - IRAN \n| 2  - KHAREJ \n| 0  - Exit"
+    DVHOST_CLOUD_menu "| 1  - IRAN \n| 2  - KHAREJ  \n| 3 - Remove \n| 0  - Exit"
     read -p "Enter your choice: " choice
     
     case $choice in
@@ -134,6 +134,9 @@ DVHOST_CLOUD_GET_LOCAL_IP(){
             read -p "Enter the IPv4 address of Server 2 (This server): " server2_ip
             read -p "Enter the IPv4 address of Server 1 (Remote server): " server1_ip
             DVHOST_CLOUD_create_tunnel_and_ping $server2_ip $server1_ip
+        ;;
+        3)
+            DVHOST_CLOUD_delete_tunnel
         ;;
         0)
             echo -e "${GREEN}Exiting program...${NC}"
@@ -189,10 +192,6 @@ DVHOST_CLOUD_setup_socat_tunnel() {
     done
 
     echo "All specified ports are being forwarded."
-}
-
-DVHOST_CLOUD_delete_tunnel_and_forward() {
-    sudo nft delete table ip6 nat
 }
 
 DVHOST_CLOUD_delete_tunnel() {
