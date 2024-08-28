@@ -65,7 +65,7 @@ DVHOST_CLOUD_menu(){
 
 DVHOST_CLOUD_MAIN(){
     clear
-    DVHOST_CLOUD_menu "| 1  - Install Localv6 \n| 2  - Tunnel Plus \n| 3  - Status \n| 0  - Exit"
+    DVHOST_CLOUD_menu "| 1  - Get IPv6 \n| 2  - Setup Tunnel \n| 3  - Status \n| 0  - Exit"
     read -p "Enter your choice: " choice
     
     case $choice in
