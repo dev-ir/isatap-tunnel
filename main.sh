@@ -27,6 +27,7 @@ DVHOST_CLOUD_install_jq() {
 
 DVHOST_CLOUD_require_command(){
     apt install python3-pip -y
+    sudo apt-get install socat -y
     DVHOST_CLOUD_install_jq
     if ! command -v pv &> /dev/null; then
         echo "pv could not be found, installing it..."
@@ -160,7 +161,7 @@ DVHOST_CLOUD_create_tunnel_and_ping() {
     echo "Tunnel created successfully for $this_server_ip."
 
     echo "=========================================="
-    echo -e "| IPv6 address of the remote server: ${RED}$remote_server_ipv6%isatap1${NC} |"
+    echo -e "| IPv6 address of the this server: ${RED}$this_server_ipv6%isatap1${NC} |"
     echo "=========================================="
 
     echo "Pinging the remote server ($remote_server_ipv6)..."
