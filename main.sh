@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 [[ $EUID -ne 0 ]] && echo -e "${RED}Fatal error: ${plain} Please run this script with root privilege \n " && exit 1
 
 
-DVHOST_CLOUD_install_jq() {
+FREEZVPN_install_jq() {
     if ! command -v jq &> /dev/null; then
         if command -v apt-get &> /dev/null; then
             echo -e "${RED}jq is not installed. Installing...${NC}"
@@ -25,10 +25,10 @@ DVHOST_CLOUD_install_jq() {
     fi
 }
 
-DVHOST_CLOUD_require_command(){
+FREEZVPN_require_command(){
     apt install python3-pip -y
     sudo apt-get install socat -y
-    DVHOST_CLOUD_install_jq
+    FREEZVPN_install_jq
     if ! command -v pv &> /dev/null; then
         echo "pv could not be found, installing it..."
         sudo apt update
@@ -36,21 +36,25 @@ DVHOST_CLOUD_require_command(){
     fi
 }
 
-DVHOST_CLOUD_menu(){
+FREEZVPN_menu(){
     clear
     SERVER_IP=$(hostname -I | awk '{print $1}')
     SERVER_COUNTRY=$(curl -sS "http://ip-api.com/json/$SERVER_IP" | jq -r '.country')
     SERVER_ISP=$(curl -sS "http://ip-api.com/json/$SERVER_IP" | jq -r '.isp')
-
+     
+                                                                            
     echo "+-----------------------------------------------------------------------+"                                                                                                
-    echo "|  _____    ______         _        _________        _        _______   |"
-    echo "| |_   _| .' ____ \       / \      |  _   _  |      / \      |_   __ \  |"
-    echo "|   | |   | (___ \_|     / _ \     |_/ | | \_|     / _ \       | |__) | |"
-    echo "|   | |    _.____ .     / ___ \        | |        / ___ \      |  ___/  |"
-    echo "|  _| |_  | \____) |  _/ /   \ \_     _| |_     _/ /   \ \_   _| |_     |"
-    echo "| |_____|  \______.' |____| |____|   |_____|   |____| |____| |_____|    |"
+    echo " ________                                          __     __  _______   __    __ "
+    echo "|        \                                        |  \   |  \|       \ |  \  |  \"
+    echo "| $$$$$$$$  ______    ______    ______   ________ | $$   | $$| $$$$$$$\| $$\ | $$"
+    echo "| $$__     /      \  /      \  /      \ |        \| $$   | $$| $$__/ $$| $$$\| $$"
+    echo "| $$  \   |  $$$$$$\|  $$$$$$\|  $$$$$$\ \$$$$$$$$ \$$\ /  $$| $$    $$| $$$$\ $$"
+    echo "| $$$$$   | $$   \$$| $$    $$| $$    $$  /    $$   \$$\  $$ | $$$$$$$ | $$\$$ $$"
+    echo "| $$      | $$      | $$$$$$$$| $$$$$$$$ /  $$$$_    \$$ $$  | $$      | $$ \$$$$"
+    echo "| $$      | $$       \$$     \ \$$     \|  $$    \    \$$$   | $$      | $$  \$$$"
+    echo " \$$       \$$        \$$$$$$$  \$$$$$$$ \$$$$$$$$     \$     \$$       \$$   \$$"
     echo "+-----------------------------------------------------------------------+"                                                                                                
-    echo -e "| Telegram Channel : ${GREEN}@DVHOST_CLOUD ${NC}|YouTube : ${RED}youtube.com/@dvhost_cloud${NC} |"
+    echo -e "| Telegram Channel : ${GREEN}@FREEZVPN ${NC}|"
     echo "+-----------------------------------------------------------------------+"                                                                                                
     echo -e "|${GREEN}Server Country    |${NC} $SERVER_COUNTRY"
     echo -e "|${GREEN}Server IP         |${NC} $SERVER_IP"
@@ -63,20 +67,20 @@ DVHOST_CLOUD_menu(){
     echo -e "\033[0m"
 }
 
-DVHOST_CLOUD_MAIN(){
+FREEZVPN_MAIN(){
     clear
-    DVHOST_CLOUD_menu "| 1  - Get IPv6 \n| 2  - Setup Tunnel \n| 3  - Status \n| 0  - Exit"
+    FREEZVPN_menu "| 1  - Get IPv6 \n| 2  - Setup Tunnel \n| 3  - Status \n| 0  - Exit"
     read -p "Enter your choice: " choice
     
     case $choice in
         1)
-            DVHOST_CLOUD_GET_LOCAL_IP
+            FREEZVPN_GET_LOCAL_IP
         ;;
         2)
-            DVHOST_CLOUD_TUNNEL
+            FREEZVPN_TUNNEL
         ;;
         3)
-            DVHOST_CLOUD_check_status
+            FREEZVPN_check_status
         ;;
         0)
             echo -e "${GREEN}Exiting program...${NC}"
@@ -89,16 +93,16 @@ DVHOST_CLOUD_MAIN(){
     esac
 }
 
-DVHOST_CLOUD_TUNNEL(){
-    DVHOST_CLOUD_menu "| 1  - Setup Tunnel  \n| 2  - Remove Tunnel \n| 0  - Exit"
+FREEZVPN_TUNNEL(){
+    FREEZVPN_menu "| 1  - Setup Tunnel  \n| 2  - Remove Tunnel \n| 0  - Exit"
     read -p "Enter your choice: " choice
 
     case $choice in
         1)
-            DVHOST_CLOUD_setup_tunnel_and_forward
+            FREEZVPN_setup_tunnel_and_forward
         ;;
         2)
-            DVHOST_CLOUD_cleanup_socat_tunnel
+            FREEZVPN_cleanup_socat_tunnel
         ;;
         0)
             echo -e "${GREEN}Exiting program...${NC}"
@@ -111,7 +115,7 @@ DVHOST_CLOUD_TUNNEL(){
     esac
 }
 
-DVHOST_CLOUD_check_status() {
+FREEZVPN_check_status() {
     if ip link show isatap1 &> /dev/null; then
         echo -e "\e[32mTunnel is UP.\e[0m"
     else
@@ -119,24 +123,24 @@ DVHOST_CLOUD_check_status() {
     fi
 }
 
-DVHOST_CLOUD_GET_LOCAL_IP(){
+FREEZVPN_GET_LOCAL_IP(){
     clear
-    DVHOST_CLOUD_menu "| 1  - IRAN \n| 2  - KHAREJ  \n| 3 - Remove \n| 0  - Exit"
+    FREEZVPN_menu "| 1  - IRAN \n| 2  - KHAREJ  \n| 3 - Remove \n| 0  - Exit"
     read -p "Enter your choice: " choice
     
     case $choice in
         1)
             read -p "Enter the IPv4 address of Server 1 (This server): " server1_ip
             read -p "Enter the IPv4 address of Server 2 (Remote server): " server2_ip
-            DVHOST_CLOUD_create_tunnel_and_ping $server1_ip $server2_ip
+            FREEZVPN_create_tunnel_and_ping $server1_ip $server2_ip
         ;;
         2)
             read -p "Enter the IPv4 address of Server 2 (This server): " server2_ip
             read -p "Enter the IPv4 address of Server 1 (Remote server): " server1_ip
-            DVHOST_CLOUD_create_tunnel_and_ping $server2_ip $server1_ip
+            FREEZVPN_create_tunnel_and_ping $server2_ip $server1_ip
         ;;
         3)
-            DVHOST_CLOUD_delete_tunnel
+            FREEZVPN_delete_tunnel
         ;;
         0)
             echo -e "${GREEN}Exiting program...${NC}"
@@ -149,11 +153,11 @@ DVHOST_CLOUD_GET_LOCAL_IP(){
     esac
 }
 
-DVHOST_CLOUD_create_tunnel_and_ping() {
+FREEZVPN_create_tunnel_and_ping() {
     local this_server_ip=$1
     local remote_server_ip=$2
-    local this_server_hex=$(DVHOST_CLOUD_ip_to_hex $this_server_ip)
-    local remote_server_hex=$(DVHOST_CLOUD_ip_to_hex $remote_server_ip)
+    local this_server_hex=$(FREEZVPN_ip_to_hex $this_server_ip)
+    local remote_server_hex=$(FREEZVPN_ip_to_hex $remote_server_ip)
     local this_server_ipv6="fe80::200:5efe:$this_server_hex"
     local remote_server_ipv6="fe80::200:5efe:$remote_server_hex"
 
@@ -194,13 +198,13 @@ DVHOST_CLOUD_create_tunnel_and_ping() {
 
 }
 
-DVHOST_CLOUD_setup_tunnel_and_forward() {
+FREEZVPN_setup_tunnel_and_forward() {
     sudo apt-get install socat
-    DVHOST_CLOUD_setup_socat_tunnel
+    FREEZVPN_setup_socat_tunnel
     echo "Tunnel setup complete. Traffic is being forwarded to $dest_ipv6."
 }
 
-DVHOST_CLOUD_setup_socat_tunnel() {
+FREEZVPN_setup_socat_tunnel() {
     read -p "Enter the destination IPv6 address: " dest_ipv6
     read -p "Enter the ports to forward (comma-separated, e.g., 2020,8080,...): " ports
 
@@ -214,12 +218,12 @@ DVHOST_CLOUD_setup_socat_tunnel() {
     echo "All specified ports are being forwarded."
 }
 
-DVHOST_CLOUD_delete_tunnel() {
+FREEZVPN_delete_tunnel() {
     sudo ip tunnel del isatap1
     echo "Tunnel deleted successfully."
 }
 
-DVHOST_CLOUD_cleanup_socat_tunnel() {
+FREEZVPN_cleanup_socat_tunnel() {
     read -p "Enter the ports to stop forwarding (comma-separated, e.g., 2020,8080,...): " ports
     IFS=',' read -r -a port_array <<< "$ports"
 
@@ -235,10 +239,10 @@ DVHOST_CLOUD_cleanup_socat_tunnel() {
     done
 }
 
-DVHOST_CLOUD_ip_to_hex() {
+FREEZVPN_ip_to_hex() {
     local ip=$1
     echo $(echo $ip | awk -F. '{printf("%02x%02x:%02x%02x",$1,$2,$3,$4)}')
 }
 
-DVHOST_CLOUD_require_command
-DVHOST_CLOUD_MAIN
+FREEZVPN_require_command
+FREEZVPN_MAIN

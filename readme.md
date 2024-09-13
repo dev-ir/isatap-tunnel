@@ -6,7 +6,7 @@
 ## Install & Upgrade
 
 ```
-bash <(curl -Ls https://raw.githubusercontent.com/dev-ir/isatap-tunnel/master/main.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/kamrankhorasani/isatap-tunnel/master/main.sh)
 ```
 
 **This project is designed for setting up Local IPv6 and tunneling to help reduce some of the restrictions.**
