@@ -172,6 +172,26 @@ DVHOST_CLOUD_create_tunnel_and_ping() {
 
     echo "To manually ping the remote server, you can use:"
     echo "ping6 -I isatap1 $remote_server_ipv6"
+
+
+    echo "Configuring ISATAP to persist after reboot..."
+
+
+    if [ ! -f /etc/rc.local ]; then
+        echo "#!/bin/bash" | sudo tee /etc/rc.local > /dev/null
+        sudo chmod +x /etc/rc.local
+    fi
+
+
+    sudo sed -i '/exit 0/d' /etc/rc.local
+    echo "ip tunnel add isatap1 mode isatap local $this_server_ip" | sudo tee -a /etc/rc.local > /dev/null
+    echo "ip link set isatap1 up" | sudo tee -a /etc/rc.local > /dev/null
+    echo "ip -6 addr add $this_server_ipv6/64 dev isatap1" | sudo tee -a /etc/rc.local > /dev/null
+    echo "sysctl -w net.ipv6.conf.all.forwarding=1" | sudo tee -a /etc/rc.local > /dev/null
+    echo "exit 0" | sudo tee -a /etc/rc.local > /dev/null
+
+    echo "ISATAP configuration added to /etc/rc.local. It will persist after reboot."
+
 }
 
 DVHOST_CLOUD_setup_tunnel_and_forward() {
